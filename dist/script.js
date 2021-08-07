@@ -44,7 +44,11 @@ class Game extends React.Component {
     super(props);
     this.state = {
       history: [{
-        squares: Array(9).fill(null) }],
+        squares: Array(9).fill(null),
+        position: {
+          row: null,
+          col: null } }],
+
 
       stepNumber: 0,
       xIsNext: true };
@@ -59,9 +63,14 @@ class Game extends React.Component {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+
     this.setState({
       history: history.concat([{
-        squares: squares }]),
+        squares: squares,
+        position: {
+          row: Math.floor(i / 3 + 1),
+          col: i % 3 + 1 } }]),
+
 
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext });
@@ -82,7 +91,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-      'Go to move #' + move :
+      `Go to move # ${move} ( 행 : ${step.position.row}, 열 : ${step.position.col} )` :
       'Go to game start';
       return /*#__PURE__*/(
         React.createElement("li", { key: move }, /*#__PURE__*/
